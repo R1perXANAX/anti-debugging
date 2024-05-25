@@ -18,7 +18,7 @@ You can compile yourself with Visual Studio 2019+ (no special instructions neede
 	sixthOne->createGUI(hWnd);`
 ```
 ## TODO
-- Add more methods
+- ~~Add more methods~~
 - Add support for x64 (there were some specifics I would have to deal for a few methods to support x64, and I got lazy to do it on V1).
 - Change the UI (either make it look good/modern or completely shitty like a Win95 program).
 
@@ -35,8 +35,14 @@ The Process Environment Block (PEB) is a data structure in the Windows operating
 This is another field in the PEB. The `NtGlobalFlag` is used by the system to store various debugging and heap information. When a process is being debugged, certain bits in this flag are set. By checking these bits, a program can determine if it's being debugged. This method is a bit more complex than the previous two, but it can still be bypassed by a skilled attacker.
 
 #### CheckRemoteDebuggerPresent
-
 This is a Windows API function that checks if a specific process is being debugged by a remote debugger. The function takes two parameters: a handle to the process to check, and a pointer to a boolean variable that receives the result. If the process is being debugged, the function sets the boolean to true. This method can be used to detect remote debugging, but like the other methods, it can be bypassed by an attacker who knows what they're doing.
+
+#### Heap Flag 
+This is a technique that allows to detect a debugger by reading the process heap flags. The process' heap is represented by a Windows internal structure called [_HEAP](https://www.vergiliusproject.com/kernels/x64/Windows%2010%20%7C%202016/2210%2022H2%20(May%202023%20Update)/_HEAP). Flags and ForceFlags members changes when the application is under a debug environment. Learn more here: [How To Detect Debuggers With Debug Flags](https://guidedhacking.com/threads/how-to-detect-debuggers-with-debug-flags.20393/)
+
+#### Time check detections
+Windows provides several APIs—GetTickCount, GetLocalTime, and QueryPerformanceCounter—that can be exploited to implement time-based anti-debugging techniques. The key idea is to measure how long a function takes to execute. If the execution time significantly exceeds a predefined average time, it may indicate that the program is running under a debugger, which typically slows down execution. Learn more here: [Time Check Antidebugging](https://guidedhacking.com/threads/how-to-detect-debuggers-with-time-checks.20402/)
+
 
 ## Credits
 
